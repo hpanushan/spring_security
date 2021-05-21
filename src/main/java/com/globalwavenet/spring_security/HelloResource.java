@@ -1,24 +1,49 @@
 package com.globalwavenet.spring_security;
 
+import com.globalwavenet.spring_security.models.AuthenticationRequest;
+import com.globalwavenet.spring_security.models.AuthenticationResponse;
+import com.globalwavenet.spring_security.services.MyUserDetailsService;
+import com.globalwavenet.spring_security.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloResource {
 
-    @GetMapping("/")
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private MyUserDetailsService userDetailsService;
+    @Autowired
+    private JwtUtil jwtTokenUtil;
+
+    @GetMapping("/hello")
     public String sayHello(){
         return "<h1>Hello World! </h1>";
     }
 
-    @GetMapping("/admin")
-    public String helloAdmin(){
-        return "<h1>Hello Admin! </h1>";
-    }
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+            );
+        } catch (BadCredentialsException e){
+            throw new Exception("Incorrect username or password", e);
+        }
+        final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(authenticationRequest.getUsername());
 
-    @GetMapping("/user")
-    public String helloUser(){
-        return "<h1>Hello User! </h1>";
-    }
+        final String jwt = jwtTokenUtil.generateToken(userDetails);
 
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+    }
 }
