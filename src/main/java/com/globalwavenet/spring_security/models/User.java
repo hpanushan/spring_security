@@ -3,15 +3,20 @@ package com.globalwavenet.spring_security.models;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name="user", schema="flink")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
+    @Column(name = "user_name")
     private String userName;
+    @Column(name="password")
     private String password;
+    @Column(name = "active")
     private boolean active;
+    @Column(name = "role")
     private String role;
 
     public int getId() {
