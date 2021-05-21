@@ -1,5 +1,6 @@
 package com.globalwavenet.spring_security.service;
 
+import com.globalwavenet.spring_security.entity.CustomUserDetails;
 import com.globalwavenet.spring_security.entity.User;
 import com.globalwavenet.spring_security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -18,8 +20,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User user = userRepository.findByUserName(userName);
-        return new org.springframework.security.core.userdetails.User(user.getUserName(),user.getPassword(),new ArrayList<>());
+        Optional<User> user = Optional.ofNullable(userRepository.findByUserName(userName));
+
+        user.orElseThrow(() -> new UsernameNotFoundException("Not found " + userName));
+
+        return user.map(CustomUserDetails::new).get();
 
     }
 }

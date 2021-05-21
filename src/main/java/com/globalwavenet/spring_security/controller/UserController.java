@@ -40,4 +40,9 @@ public class UserController {
 
         return ResponseEntity.ok(new AuthResponse(token));
     }
+
+    @GetMapping("/admin")
+    public String admin(){
+        return "<h1>Hello Admin<h1>";
+    }
 }
