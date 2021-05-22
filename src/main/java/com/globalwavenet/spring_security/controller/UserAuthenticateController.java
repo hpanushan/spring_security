@@ -11,23 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-public class UserController {
+public class UserAuthenticateController {
 
     @Autowired
     private JwtUtil jwtUtil;
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
-    @GetMapping("/hello")
-    public String hello(){
-        return "{result : hello}";
-    }
-
-    @GetMapping("/admin")
-    public String admin(){
-        return "{result : admin}";
-    }
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody AuthRequest authRequest) throws Exception{

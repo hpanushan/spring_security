@@ -54,7 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/webjars/**");
     }
 
-
     @Bean
     public AuthenticationManager authenticationManager() throws Exception{
         return super.authenticationManager();
