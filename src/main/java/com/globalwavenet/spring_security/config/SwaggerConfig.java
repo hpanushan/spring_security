@@ -2,22 +2,20 @@ package com.globalwavenet.spring_security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpHeaders;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.SecurityScheme;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
-@EnableSwagger2
 @Configuration
-@Import(springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig {
 
     @Bean
@@ -27,8 +25,9 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.globalwavenet.spring_security"))
                 .build()
-                .apiInfo(apiDetails())
-                .securitySchemes(Collections.singletonList(apiKey()));
+                .securityContexts(Collections.singletonList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
+                .apiInfo(apiDetails());
     }
 
     private ApiInfo apiDetails(){
@@ -43,10 +42,16 @@ public class SwaggerConfig {
                 Collections.emptyList());
     }
 
-    @Bean
-    public SecurityScheme apiKey() {
-        return new ApiKey("Authorization", "Authorization", "header");
+    private ApiKey apiKey() {
+        return new ApiKey("Token Access", "Authorization", "header");
     }
 
+    private SecurityContext securityContext(){
+        return SecurityContext.builder().securityReferences(securityReference()).build();
+    }
 
+    private List<SecurityReference> securityReference(){
+        AuthorizationScope[] authorizationScope = {new AuthorizationScope("Unlimited","Full Api Permission")};
+        return Collections.singletonList(new SecurityReference("Token Access",authorizationScope));
+    }
 }
