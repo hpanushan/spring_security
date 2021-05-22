@@ -19,9 +19,14 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @GetMapping("/")
+    @GetMapping("/hello")
     public String hello(){
-        return "<h1>Hello World<h1>";
+        return "{result : hello}";
+    }
+
+    @GetMapping("/admin")
+    public String admin(){
+        return "{result : admin}";
     }
 
     @PostMapping("/authenticate")
@@ -39,8 +44,5 @@ public class UserController {
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
-    @GetMapping("/admin")
-    public String admin(){
-        return "<h1>Hello Admin<h1>";
-    }
+
 }
