@@ -3,6 +3,7 @@ package com.globalwavenet.spring_security.service;
 import com.globalwavenet.spring_security.entity.User;
 import com.globalwavenet.spring_security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,9 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public List<User> getAllUsers(){
         return  userRepository.findAll();
@@ -21,6 +25,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public void saveUser(User user) {
         String pw = user.getPassword();
+        String encodedPassword = passwordEncoder.encode(pw);
+
+        // Set new encoded password
+        user.setPassword(encodedPassword);
         userRepository.save(user);
     }
 
@@ -31,7 +39,7 @@ public class UserServiceImpl implements UserService{
         userFromDb.setLname(user.getLname());
         userFromDb.setUserName(user.getUserName());
         userFromDb.setRole(user.getRole());
-        userFromDb.setPassword(user.getPassword());
+        userFromDb.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(userFromDb);
     }
 
