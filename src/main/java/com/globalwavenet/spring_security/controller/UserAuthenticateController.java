@@ -2,8 +2,10 @@ package com.globalwavenet.spring_security.controller;
 
 import com.globalwavenet.spring_security.entity.AuthRequest;
 import com.globalwavenet.spring_security.entity.AuthResponse;
+import com.globalwavenet.spring_security.entity.ResponseMessage;
 import com.globalwavenet.spring_security.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +28,7 @@ public class UserAuthenticateController {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
         }catch (Exception e){
-            throw new Exception("invalid username or password");
+            return new ResponseEntity<>(new ResponseMessage("invalid username or password"), HttpStatus.UNAUTHORIZED);
         }
 
         // Generate token

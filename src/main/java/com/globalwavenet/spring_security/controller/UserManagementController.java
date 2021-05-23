@@ -1,9 +1,11 @@
 package com.globalwavenet.spring_security.controller;
 
+import com.globalwavenet.spring_security.entity.ResponseMessage;
 import com.globalwavenet.spring_security.entity.User;
 import com.globalwavenet.spring_security.entity.UserGetResponse;
 import com.globalwavenet.spring_security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,8 +58,14 @@ public class UserManagementController {
 
     // For delete users
     @DeleteMapping("/delete/{id}")
-    public void deleteUser(@PathVariable Integer id){
-        userService.deleteById(id);
+    public ResponseEntity<?> deleteUser(@PathVariable Integer id){
+        try{
+            userService.deleteById(id);
+        }catch (Exception e){
+            return new ResponseEntity<>(new ResponseMessage("invalid user"), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(new ResponseMessage("user removed"));
     }
+
 
 }
