@@ -1,21 +1,15 @@
 package com.globalwavenet.spring_security.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class ResponseMessage {
 
     private String result;
-
-    public ResponseMessage() {
-    }
-
-    public ResponseMessage(String result) {
-        this.result = result;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
 }
