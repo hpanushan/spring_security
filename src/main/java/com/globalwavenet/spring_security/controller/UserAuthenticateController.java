@@ -1,19 +1,18 @@
 package com.globalwavenet.spring_security.controller;
 
-import com.globalwavenet.spring_security.entity.AuthRequest;
-import com.globalwavenet.spring_security.entity.AuthResponse;
-import com.globalwavenet.spring_security.entity.ResponseMessage;
+import com.globalwavenet.spring_security.model.AuthRequest;
+import com.globalwavenet.spring_security.model.AuthResponse;
+import com.globalwavenet.spring_security.model.ResponseMessage;
 import com.globalwavenet.spring_security.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class UserAuthenticateController {
 
     @Autowired

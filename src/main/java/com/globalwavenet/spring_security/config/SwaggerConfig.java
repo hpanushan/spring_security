@@ -32,7 +32,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiDetails(){
         return new ApiInfo(
-                "API",
+                "Authentication and User management API",
                 "",
                 "1.0V",
                 "",

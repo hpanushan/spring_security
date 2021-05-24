@@ -1,8 +1,8 @@
 package com.globalwavenet.spring_security.controller;
 
-import com.globalwavenet.spring_security.entity.ResponseMessage;
+import com.globalwavenet.spring_security.model.ResponseMessage;
 import com.globalwavenet.spring_security.entity.User;
-import com.globalwavenet.spring_security.entity.UserGetResponse;
+import com.globalwavenet.spring_security.model.UserGetResponse;
 import com.globalwavenet.spring_security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/v1/user")
 public class UserManagementController {
 
     @Autowired

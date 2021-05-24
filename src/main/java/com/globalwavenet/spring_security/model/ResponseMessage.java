@@ -1,4 +1,4 @@
-package com.globalwavenet.spring_security.entity;
+package com.globalwavenet.spring_security.model;
 
 public class ResponseMessage {
 

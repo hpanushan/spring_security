@@ -1,6 +1,6 @@
 package com.globalwavenet.spring_security.service;
 
-import com.globalwavenet.spring_security.entity.CustomUserDetails;
+import com.globalwavenet.spring_security.model.CustomUserDetails;
 import com.globalwavenet.spring_security.entity.User;
 import com.globalwavenet.spring_security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
