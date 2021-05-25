@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1")
 public class UserManagementController {
 
     @Autowired
     private UserService userService;
 
     // For get user details
-    @GetMapping("/get")
+    @GetMapping("/user")
     public ResponseEntity<?> findAllUsers(){
         List<User> userDetails = userService.getAllUsers();
 
@@ -43,21 +43,23 @@ public class UserManagementController {
     }
 
     // For add new users
-    @PostMapping("/add")
-    public void addUser(@RequestBody User user){
+    @PostMapping("/user")
+    public ResponseMessage addUser(@RequestBody User user){
         userService.saveUser(user);
+        return new ResponseMessage("user added");
     }
 
     // For update users
-    @PutMapping("/update")
-    public void updateUser(@RequestBody User user){
+    @PutMapping("/user")
+    public ResponseMessage updateUser(@RequestBody User user){
         // Extract id from user object
         int id = user.getId();
         userService.updateUser(id,user);
+        return new ResponseMessage("user updated");
     }
 
     // For delete users
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Integer id){
         try{
             userService.deleteById(id);
