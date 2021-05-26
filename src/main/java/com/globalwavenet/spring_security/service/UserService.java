@@ -14,4 +14,6 @@ public interface UserService {
 
     public void deleteById(Integer id);
 
+    public Boolean userExists(User user);
+
 }

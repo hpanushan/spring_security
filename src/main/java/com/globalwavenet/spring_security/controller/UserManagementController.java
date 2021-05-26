@@ -5,9 +5,13 @@ import com.globalwavenet.spring_security.entity.User;
 import com.globalwavenet.spring_security.model.UserGetResponse;
 import com.globalwavenet.spring_security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,15 +48,21 @@ public class UserManagementController {
         }catch (Exception e){
             return ResponseEntity.ok(new ResponseMessage("failed"));
         }
-
     }
 
     // For add new users
     @PostMapping("/user")
     public ResponseEntity<?> addUser(@RequestBody User user){
         try{
-            userService.saveUser(user);
-            return ResponseEntity.ok(new ResponseMessage("user added"));
+            Boolean userExists = userService.userExists(user);
+            if (userExists){
+                return ResponseEntity.ok(new ResponseMessage("user exists"));
+            }
+            else {
+                // Save new user
+                userService.saveUser(user);
+                return ResponseEntity.ok(new ResponseMessage("user added"));
+            }
         }catch (Exception e){
             return ResponseEntity.ok(new ResponseMessage("failed"));
         }
