@@ -22,40 +22,53 @@ public class UserManagementController {
     // For get user details
     @GetMapping("/user")
     public ResponseEntity<?> findAllUsers(){
-        List<User> userDetails = userService.getAllUsers();
+        try{
+            List<User> userDetails = userService.getAllUsers();
 
-        ArrayList<UserGetResponse> response = new ArrayList<UserGetResponse>(); // Create an ArrayList object
+            ArrayList<UserGetResponse> response = new ArrayList<UserGetResponse>(); // Create an ArrayList object
 
-        for (User user : userDetails)
-        {
-            UserGetResponse userResponse = new UserGetResponse();
-            userResponse.setId(user.getId());
-            userResponse.setFname(user.getFname());
-            userResponse.setLname(user.getLname());
-            userResponse.setUserName(user.getUserName());
-            userResponse.setRole(user.getRole());
-            userResponse.setActive(user.getActive());
+            for (User user : userDetails)
+            {
+                UserGetResponse userResponse = new UserGetResponse();
+                userResponse.setId(user.getId());
+                userResponse.setFname(user.getFname());
+                userResponse.setLname(user.getLname());
+                userResponse.setUserName(user.getUserName());
+                userResponse.setRole(user.getRole());
+                userResponse.setActive(user.getActive());
 
-            // Add new object to array list
-            response.add(userResponse);
+                // Add new object to array list
+                response.add(userResponse);
+            }
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
+            return ResponseEntity.ok(new ResponseMessage("failed"));
         }
-        return ResponseEntity.ok(response);
+
     }
 
     // For add new users
     @PostMapping("/user")
-    public ResponseMessage addUser(@RequestBody User user){
-        userService.saveUser(user);
-        return new ResponseMessage("user added");
+    public ResponseEntity<?> addUser(@RequestBody User user){
+        try{
+            userService.saveUser(user);
+            return ResponseEntity.ok(new ResponseMessage("user added"));
+        }catch (Exception e){
+            return ResponseEntity.ok(new ResponseMessage("failed"));
+        }
     }
 
     // For update users
     @PutMapping("/user")
-    public ResponseMessage updateUser(@RequestBody User user){
-        // Extract id from user object
-        int id = user.getId();
-        userService.updateUser(id,user);
-        return new ResponseMessage("user updated");
+    public ResponseEntity<?> updateUser(@RequestBody User user){
+        try{
+            // Extract id from user object
+            int id = user.getId();
+            userService.updateUser(id,user);
+            return ResponseEntity.ok(new ResponseMessage("user updated"));
+        }catch (Exception e){
+            return ResponseEntity.ok(new ResponseMessage("failed"));
+        }
     }
 
     // For delete users
@@ -63,10 +76,10 @@ public class UserManagementController {
     public ResponseEntity<?> deleteUser(@PathVariable Integer id){
         try{
             userService.deleteById(id);
+            return ResponseEntity.ok(new ResponseMessage("user removed"));
         }catch (Exception e){
             return new ResponseEntity<>(new ResponseMessage("invalid user"), HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok(new ResponseMessage("user removed"));
     }
 
 
